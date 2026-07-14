@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PICCOLA BIO</title>
+    <style>
+        /* --- 1. 基础复古美学样式 --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft YaHei", sans-serif; }
+        
+        body {
+            /* 🎯 完美精准还原：清爽、干净的淡粉色白线大菱格背景 */
+            background-color: #ffe6ee;
+            background-image: 
+                linear-gradient(45deg, rgba(255,255,255,0.7) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.7) 75%, rgba(255,255,255,0.7)),
+                linear-gradient(45deg, rgba(255,255,255,0.7) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.7) 75%, rgba(255,255,255,0.7));
+            background-size: 80px 80px;
+            background-position: 0 0, 40px 40px;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23db7093"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
+        }
+
+        /* 网站大外壳 */
+        #app-container {
+            display: flex;
+            width: 950px;
+            height: 580px;
+            gap: 20px;
+        }
+
+        /* 复古系统窗口（带有一圈精致半透明粉色护边） */
+        .win-window {
+            background: #fffafa;
+            border: 2px solid #d48da3;
+            outline: 2px solid rgba(240, 163, 185, 0.4);
+            outline-offset: 1px;
+            box-shadow: 4px 4px 0px rgba(224, 179, 193, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 窗口粉色标题栏 */
+        .win-titlebar {
+            background: #f0a3b9;
+            color: white;
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #d48da3;
+            letter-spacing: 1px;
+        }
+
+        .win-btn-group button {
+            background: #fffafa;
+            border: 1px solid #d48da3;
+            color: #d48da3;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+        /* --- 2. 左侧边栏 --- */
+        #left-sidebar { width: 260px; height: 100%; flex-shrink: 0; }
+        
+        .profile-area {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px dashed #eab6c6;
+        }
+
+        .avatar-box {
+            width: 100%;
+            height: 180px;
+            border: 2px solid #d48da3;
+            background: #eee;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        .avatar-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* 复古格言展示栏 */
+        .motto-box {
+            width: 100%;
+            padding: 8px 6px;
+            border: 1px solid #eab6c6;
+            background: #fff5f7;
+            color: #a65d73;
+            font-size: 12px;
+            text-align: center;
+            border-radius: 2px;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+
+        /* 文件夹菜单 */
+        .menu-list {
+            padding: 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            list-style: none;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px;
+            border: 1px solid transparent;
+            color: #8c4357;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .menu-item:hover {
+            background: #fff0f3;
+            border: 1px dashed #d48da3;
+        }
+
+        /* 粉色复古文件夹小图标 */
+        .folder-icon {
+            width: 22px;
+            height: 18px;
+            background: #f7b3c6;
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 1px 1px 0px #d48da3;
+        }
+        .folder-icon::before {
+            content: '';
+            width: 10px;
+            height: 4px;
+            background: #f7b3c6;
+            position: absolute;
+            top: -4px;
+            left: 0;
+            border-radius: 1px 1px 0 0;
+        }
+
+        /* --- 3. 右侧大内容区 --- */
+        #right-content { flex: 1; height: 100%; }
+        
+        .main-body {
+            padding: 30px;
+            overflow-y: auto;
+            flex: 1;
+            color: #592d39;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        .page-content h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #bf637c;
+            border-bottom: 2px solid #f7b3c6;
+            padding-bottom: 5px;
+        }
+
+        /* 独立加密锁界面样式 */
+        .lock-container {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        /* 密码输入控件组合区域 */
+        .lock-input-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* 复古风格密码输入框 */
+        .lock-input {
+            background: #fffafa;
+            border: 2px solid #d48da3;
+            padding: 5px 10px;
+            color: #592d39;
+            font-size: 14px;
+            font-weight: bold;
+            width: 160px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 2px;
+            box-shadow: inset 1px 1px 3px rgba(212, 141, 163, 0.2);
+        }
+        .lock-input:focus {
+            background: #fff0f3;
+            border-color: #f0a3b9;
+        }
+
+        /* 复古风格解锁按钮 */
+        .lock-btn {
+            background: #f0a3b9;
+            color: white;
+            border: 1px solid #d48da3;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 2px 2px 0 #d48da3;
+        }
+        .lock-btn:hover {
+            background: #f2b4c6;
+        }
+        .lock-btn:active { 
+            transform: translate(1px, 1px); 
+            box-shadow: 1px 1px 0 #d48da3; 
+        }
+
+        /* 通用链接样式 */
+        .main-body a { color: #d48da3; text-decoration: none; font-weight: bold; }
+        .main-body a:hover { text-decoration: underline; }
+
+        /* --- 4. 📱 手机端适配样式 --- */
+        @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                overflow-y: auto; 
+                padding: 12px;
+            }
+
+            #app-container {
+                flex-direction: column;
+                width: 100%;
+                height: auto;
+                gap: 15px;
+            }
+
+            #left-sidebar {
+                width: 100%;
+                height: auto;
+            }
+
+            .profile-area {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 12px;
+                text-align: left;
+            }
+
+            .avatar-box {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+
+            .profile-info-right {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .menu-list {
+                padding: 12px;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .menu-item {
+                flex: 1;
+                justify-content: center;
+                font-size: 12px;
+                padding: 8px 4px;
+                background: #fff0f3;
+                border: 1px solid #eab6c6;
+            }
+
+            #right-content {
+                width: 100%;
+                height: auto;
+                min-height: 300px;
+            }
+
+            .main-body {
+                padding: 18px;
+            }
+
+            .lock-container {
+                padding: 40px 0;
+            }
+
+            .lock-input-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .lock-input {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        
+        <!-- 左侧控制台窗口 -->
+        <div id="left-sidebar" class="win-window">
+            <div class="win-titlebar">
+                <span>♡ GEEK GIRL CLUB</span>
+                <div class="win-btn-group"><button>_</button><button>X</button></div>
+            </div>
+            <div class="profile-area">
+                <div class="avatar-box">
+                    <img src="pic.PNG" alt="插画/头像">
+                </div>
+                <div class="profile-info-right">
+                    <div class="motto-box">🌸 "행동은 모든 불안을 없앤다"</div>
+                </div>
+            </div>
+            
+            <!-- 文件夹菜单 -->
+            <ul class="menu-list">
+                <li class="menu-item" onclick="showTab('about')"><div class="folder-icon"></div> 自我介绍</li>
+                <li class="menu-item" onclick="showTab('projects')"><div class="folder-icon"></div> 自制网页</li>
+                <li class="menu-item" onclick="showTab('translations')"><div class="folder-icon"></div> 汉化网页</li>
+                <li class="menu-item" onclick="showTab('culture')"><div class="folder-icon"></div> 文化手札</li>
+            </ul>
+        </div>
+
+        <!-- 右侧大内容展示窗口 -->
+        <div id="right-content" class="win-window">
+            <div class="win-titlebar">
+                <span>♡ Don't wake me I'm not dreaming</span>
+                <div class="win-btn-group"><button>_</button><button>X</button></div>
+            </div>
+            
+            <div class="main-body">
+
+                <!-- 【文章一：自我介绍】 -->
+                <div id="content-about" class="page-content active">
+                    <h2>🙋‍♀️ 关于我</h2>
+                    <p>你好！我是 <strong>Piccola</strong>。✨</p>
+                    <p>属性哪吒与灵珠子梦女，一人论与二人论均有建设；拒同嫁及魔童相关。</p>
+                    <p>兴趣主要围绕日韩文化整理、网页制作、设卡模板，以及一些日常里的「プチ発見」展开。💗</p>
+                    <p>这里用来存放自己整理与折腾出来的一些小成果，包括适用于 <strong>梦向 CP / OC</strong> 的设定填写网页、代餐搜寻，以及日韩博物志相关的资料整理。</p>
+                    <p>希望这些轻量的记录与作品，能为创作与探索带来一点便利。🌷</p>
+                    <p>祝你今天也能有所收获，玩得开心！😊</p>
+                </div>
+
+                <!-- 【文章二：自制网页】 -->
+                <div id="content-projects" class="page-content">
+                    <h2>💻 自制网页归档</h2>
+                    <p>⚠️ 本页面仅适配电脑端，手机浏览可能出现排版异常。</p>
+                    <br>
+                    <ul>
+                        <li>📌 <a href="https://lih23268-create.github.io/character-card/" target="_blank">一分钟了解 OC</a> —— 二十项角色详细设定</li>
+                        <li>📌 <a href="https://yoursforever99.github.io/oc-music-template/" target="_blank">OC 印象曲</a> —— 角色代餐曲与歌词展示页</li>
+                        <li>📌 <a href="https://lih23268-create.github.io/cp-template/" target="_blank">三分钟 CP 介绍</a> —— 用一页梳理 CP 的关系性</li>
+                        <li>📌 <a href="https://yoursforever99.github.io/cp-handbook-canvas/" target="_blank">双人拍立得</a> —— 简洁时尚风格的安利卡</li>
+                        <li>📌 <a href="https://yoursforever99.github.io/cp-aesthetic-canvas/" target="_blank">CP 象征物</a> —— 收集并展示 CP 的意象物与故事</li>
+                        <li>📌 <a href="https://yoursforever99.github.io/my-AU-cards/" target="_blank">不同 AU 卡片</a> —— 填写设定与配图，一键生成 AU 汇总展示图</li>
+                    </ul>
+                </div>
+
+                <!-- 【文章三：汉化网页】 -->
+                <div id="content-translations" class="page-content">
+                    <h2>📚 汉化网页作品</h2>
+                    <p>✅ 支持电脑与手机浏览。</p>
+                    <div class="lock-container">
+                        <p>🔒 该文件夹已加密，请输入 6 位访问密码查看内容。</p>
+                        <!-- 🎯 精美内嵌式密码输入组 -->
+                        <div class="lock-input-group">
+                            <input type="password" class="lock-input" placeholder="请输入访问密码" onkeydown="handleEnter(event, this)">
+                            <button class="lock-btn" onclick="checkEmbeddedPassword(this)">确认解锁</button>
+                        </div>
+                    </div>
+                    <div class="secret-article" style="display:none;">
+                        <p>🎉 密码验证成功！以下是汉化的作品内容与链接：</p>
+                        <br>
+                        <ul>
+                            <li>📌 <a href="https://splendorous-douhua-29d223.netlify.app/" target="_blank">Q 版立绘关系性</a> —— 可用 Q 版立绘展示角色互动与关系</li>
+                            <li>📌 <a href="https://rococo-cajeta-b31c40.netlify.app/" target="_blank">Mac 风格 CP 故事</a> —— Mac UI 风格的 CP 剧情记录页</li>
+                            <li>📌 <a href="https://stupendous-klepon-2a41ad.netlify.app/" target="_blank">印象曲生成器</a> —— 使用 API，根据图片与关键词为 CP 或角色推荐专属歌单</li>
+                            <li>📌 <a href="https://magnificent-frangollo-b3ec94.netlify.app/" target="_blank">文字转图片</a> —— 将 CP 文段、小说短打制作成图片，并可搭配稿件展示</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 【文章四：东亚文化】 -->
+                <div id="content-culture" class="page-content">
+                    <h2>📖 东亚文化作品</h2>
+                    <p>✅ 支持电脑与手机浏览。</p>
+                    <div class="lock-container">
+                        <p>🔒 该文件夹已加密，请输入 6 位访问密码查看内容。</p>
+                        <!-- 🎯 精美内嵌式密码输入组 -->
+                        <div class="lock-input-group">
+                            <input type="password" class="lock-input" placeholder="请输入访问密码" onkeydown="handleEnter(event, this)">
+                            <button class="lock-btn" onclick="checkEmbeddedPassword(this)">确认解锁</button>
+                        </div>
+                    </div>
+                    <div class="secret-article" style="display:none;">
+                        <p>🎉 密码验证成功！以下是东亚文化相关内容：</p>
+                        <br>
+                        <ul>
+                            <li>📖 <a href="https://unrivaled-phoenix-bdff05.netlify.app/" target="_blank">韩文诗歌</a> —— 韩国诗歌摘录与译文</li>
+                            <li>🍃 <a href="https://tubular-rugelach-0a23d1.netlify.app/" target="_blank">日本意象随笔</a> —— 日本文化中的植物、季语与意象</li>
+                            <li>✍️ <a href="https://lih23268-create.github.io/my-web-cards/" target="_blank">日韩汉字词卡</a> —— 有趣的中日韩汉字词整理</li>
+                            <li>👻 <a href="https://nervous-flat-d4c.notion.site/396627a19a4f80369491e8dc9321c2b3" target="_blank">文献与怪谈辑录</a> —— （需🪜）神话、怪谈与民俗文献</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 控制核心逻辑：切换文章 + 内嵌密码锁 -->
+    <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('content-' + tabId).classList.add('active');
+            
+            if (window.innerWidth <= 768) {
+                document.getElementById('right-content').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // 处理内嵌按钮点击验证
+        function checkEmbeddedPassword(button) {
+            const container = button.closest(".lock-input-group");
+            const inputField = container.querySelector(".lock-input");
+            const userInput = inputField.value;
+
+            if (userInput === "339912") {
+                const page = button.closest(".page-content");
+                page.querySelector(".lock-container").style.display = "none";
+                page.querySelector(".secret-article").style.display = "block";
+            } else {
+                alert("密码错误，无法打开该文件夹！");
+                inputField.value = ""; // 清空输入框方便重新输入
+                inputField.focus();
+            }
+        }
+
+        // 监听回车键快捷解锁
+        function handleEnter(event, input) {
+            if (event.key === "Enter") {
+                const btn = input.nextElementSibling;
+                checkEmbeddedPassword(btn);
+            }
+        }
+    </script>
+</body>
+</html>
