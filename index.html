@@ -25,6 +25,34 @@
             cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23db7093"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'), auto;
         }
 
+        /* 自制网页归档的分类小标题样式 */
+        .project-section h3 {
+            font-size: 14px;
+            color: #d48da3; /* 统一使用主色粉色 */
+            margin-bottom: 8px;
+            border-left: 3px solid #f0a3b9; /* 左侧加一个小蓝/粉条装饰 */
+            padding-left: 8px;
+        }
+
+        /* 提示文字微调，不那么扎眼，更融入网页整体 */
+        .warning-tips {
+            font-size: 12px;
+            color: #8c8284;
+            margin: 4px 0 10px 8px;
+        }
+
+        /* 🎯 【核心修改】这里彻底统一四个页面所有的 ul 列表间距与圆点风格 */
+        .page-content ul {
+            margin: 10px 0 20px 0;
+            padding-left: 20px;
+            list-style-type: disc; /* 统一使用经典的浏览器原生小圆点 */
+        }
+
+        .page-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
         /* 网站大外壳 */
         #app-container {
             display: flex;
@@ -361,16 +389,29 @@
                 <!-- 【文章二：自制网页】 -->
                 <div id="content-projects" class="page-content">
                     <h2>💻 自制网页归档</h2>
-                    <p>⚠️ 本页面仅适配电脑端，手机浏览可能出现排版异常。</p>
+                    
+                    <!-- 第一部分：已完美适配手机端的新作 -->
+                    <div class="project-section">
+                        <h3>✨ 响应式适配（手机/电脑通用）</h3>
+                        <ul>
+                            <li>📌 <a href="https://yoursforever99.github.io/my-AU-cards/" target="_blank"> 不同 AU 卡片</a> —— 填写设定与配图，一键生成 AU 汇总展示图</li>
+                        </ul>
+                    </div>
+
                     <br>
-                    <ul>
-                        <li>📌 <a href="https://lih23268-create.github.io/character-card/" target="_blank">一分钟了解 OC</a> —— 二十项角色详细设定</li>
-                        <li>📌 <a href="https://yoursforever99.github.io/oc-music-template/" target="_blank">OC 印象曲</a> —— 角色代餐曲与歌词展示页</li>
-                        <li>📌 <a href="https://lih23268-create.github.io/cp-template/" target="_blank">三分钟 CP 介绍</a> —— 用一页梳理 CP 的关系性</li>
-                        <li>📌 <a href="https://yoursforever99.github.io/cp-handbook-canvas/" target="_blank">双人拍立得</a> —— 简洁时尚风格的安利卡</li>
-                        <li>📌 <a href="https://yoursforever99.github.io/cp-aesthetic-canvas/" target="_blank">CP 象征物</a> —— 收集并展示 CP 的意象物与故事</li>
-                        <li>📌 <a href="https://yoursforever99.github.io/my-AU-cards/" target="_blank">不同 AU 卡片</a> —— 填写设定与配图，一键生成 AU 汇总展示图</li>
-                    </ul>
+
+                    <!-- 第二部分：早期电脑端作品 -->
+                    <div class="project-section">
+                        <h3>🖥️ 电脑端专用（暂未适配手机）</h3>
+                        <p class="warning-tips">⚠️ 以下页面仅适配电脑端，用手机浏览可能会出现排版错乱哦。</p>
+                        <ul>
+                            <li>📌 <a href="https://lih23268-create.github.io/character-card/" target="_blank">一分钟了解 OC</a> —— 二十项角色详细设定</li>
+                            <li>📌 <a href="https://yoursforever99.github.io/oc-music-template/" target="_blank">OC 印象曲</a> —— 角色代餐曲与歌词展示页</li>
+                            <li>📌 <a href="https://lih23268-create.github.io/cp-template/" target="_blank">三分钟 CP 介绍</a> —— 用一页梳理 CP 的关系性</li>
+                            <li>📌 <a href="https://yoursforever99.github.io/cp-handbook-canvas/" target="_blank">双人拍立得</a> —— 简洁时尚风格的安利卡</li>
+                            <li>📌 <a href="https://yoursforever99.github.io/cp-aesthetic-canvas/" target="_blank">CP 象征物</a> —— 收集并展示 CP 的意象物与故事</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- 【文章三：汉化网页】 -->
